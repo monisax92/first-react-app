@@ -1,53 +1,62 @@
-import {Component} from 'react';
+import { Component } from "react";
 
 // import logo from './logo.svg';
-import './App.css';
-import $ from 'jquery';
+import "./App.css";
+// import $ from 'jquery';
 
-class App extends Component{
-
-  constructor(){
+class App extends Component {
+  constructor() {
     super();
 
     this.state = {
-      books: []//initial (empty) state
+      people: [], //initial (empty) state
+      searchField: ""
     };
-  };
+  }
 
-  componentDidMount(){
-    // fetch('https://jsonplaceholder.typicode.com/albums')
-    // .then((resp) => resp.json())
-    // .then((albums) => {this.setState(() => this.state = {books: albums})});
-    
-    // const data = JSON.parse(require("./books-data.json"));
-    // this.state = {books: data};
-    // .then((resp) => resp.json())
-    // .then((books) => {this.setState(() => this.state = {books: books})});
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(resp => resp.json())
+      .then(users => {
+        this.setState(() => (this.state = { people: users }));
+      });
+  }
 
-let data = $.getJSON("./books.json", (data) => console.log(data));
-console.log(data);
-    // this.setState(() => this.state = {books: $.getJSON('books.json', (data) => console.log(data))});
-  };
+  render() {
+    const selectedPeople = this.state.people.filter(person => {
+      return person.name.toLowerCase().includes(this.state.searchField);
+    });
+    console.log(this.state);
 
-  render(){
     return (
-    <div className="App">
-      <input 
-        className='search-box' 
-        type='search' 
-        placeholder='Search the name...' 
-        onChange={(e) => {console.log("changed");}}
-      />
+      <div className="App">
+        <input
+          className="search-box"
+          type="search"
+          placeholder="Search the name..."
+          onChange={e => {
+            this.setState(() => {
+              return {
+                searchField: e.target.value.toLowerCase()
+              };
+            });
+          }}
+        />
 
-      {/* {this.state.books.map((book) => {
-        return <h1 key={book.ibsn}>{book.title}</h1>;
-      })} */}
-    </div>
+        {selectedPeople.map(person => {
+          return (
+            <p>
+              <h1 key={person.id}>{person.name}</h1>
+              {/* <img src="https://thispersondoesnotexist.com/image" /> */}
+            </p>
+          );
+        })}
+      </div>
     );
-  };
+  }
 }
 // function App() {
-  
+
 // }
 
 export default App;
