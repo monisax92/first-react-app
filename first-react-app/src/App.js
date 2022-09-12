@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import {Component} from 'react';
 
-function App() {
-  return (
+// import logo from './logo.svg';
+import './App.css';
+import $ from 'jquery';
+
+class App extends Component{
+
+  constructor(){
+    super();
+
+    this.state = {
+      books: []//initial (empty) state
+    };
+  };
+
+  componentDidMount(){
+    // fetch('https://jsonplaceholder.typicode.com/albums')
+    // .then((resp) => resp.json())
+    // .then((albums) => {this.setState(() => this.state = {books: albums})});
+    
+    // const data = JSON.parse(require("./books-data.json"));
+    // this.state = {books: data};
+    // .then((resp) => resp.json())
+    // .then((books) => {this.setState(() => this.state = {books: books})});
+
+let data = $.getJSON("./books.json", (data) => console.log(data));
+console.log(data);
+    // this.setState(() => this.state = {books: $.getJSON('books.json', (data) => console.log(data))});
+  };
+
+  render(){
+    return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input 
+        className='search-box' 
+        type='search' 
+        placeholder='Search the name...' 
+        onChange={(e) => {console.log("changed");}}
+      />
+
+      {/* {this.state.books.map((book) => {
+        return <h1 key={book.ibsn}>{book.title}</h1>;
+      })} */}
     </div>
-  );
+    );
+  };
 }
+// function App() {
+  
+// }
 
 export default App;
